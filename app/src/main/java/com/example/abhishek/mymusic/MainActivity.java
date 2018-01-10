@@ -17,11 +17,19 @@ public class MainActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     HashMap<String,String> hashMap = new HashMap<>();
     //HttpParse httpParse = new HttpParse();
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //Assigning Id's
+        First_Name = (EditText)findViewById(R.id.editTextF_Name);
+        Last_Name = (EditText)findViewById(R.id.editTextL_Name);
+        Email = (EditText)findViewById(R.id.editTextEmail);
+        Password = (EditText)findViewById(R.id.editTextPassword);
+
+        register = (Button)findViewById(R.id.Submit);
+        log_in = (Button)findViewById(R.id.Login);
     }
 }
