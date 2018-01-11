@@ -31,5 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         register = (Button)findViewById(R.id.Submit);
         log_in = (Button)findViewById(R.id.Login);
+
+        //Adding Click Listener on button.
     }
 }
