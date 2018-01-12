@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    
+                   Toast.makeText(MainActivity.this,"Please fill all form fields.",Toast.LENGTH_SHORT).show();
                 }
             }
         });
