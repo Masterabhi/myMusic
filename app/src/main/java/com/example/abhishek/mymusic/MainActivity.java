@@ -2,8 +2,11 @@ package com.example.abhishek.mymusic;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,10 +19,15 @@ public class MainActivity extends AppCompatActivity {
     EditText First_Name, Last_Name, Email, Password ;
     String F_Name_Holder, L_Name_Holder, EmailHolder, PasswordHolder;
     String HttpURL = "https://androidjsonblog.000webhostapp.com/User/UserRegistration.php";
+    String finalResult;
     Boolean CheckEditText ;
     ProgressDialog progressDialog;
     HashMap<String,String> hashMap = new HashMap<>();
-    //HttpParse httpParse = new HttpParse();
+     //HttpParse httpParse = new HttpParse();
+
+
+
+
 
 
     @Override
@@ -39,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+               CheckEditTextIsEmptyOrNot();
 
                 if (CheckEditText)
                 {
@@ -51,5 +59,63 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        log_in.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,UserLoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
+        public void CheckEditTextIsEmptyOrNot(){
+        F_Name_Holder = First_Name.getText().toString();
+        L_Name_Holder = Last_Name.getText().toString();
+        EmailHolder = Email.getText().toString();
+        PasswordHolder = Password.getText().toString();
+
+         if(TextUtils.isEmpty(F_Name_Holder)||TextUtils.isEmpty(L_Name_Holder)||TextUtils.isEmpty(EmailHolder)||TextUtils.isEmpty(PasswordHolder))
+         {
+             CheckEditText=false;
+         }
+         else
+         {
+             CheckEditText=true;
+         }
+
+    }
+    public void UserRegisterationFunction(final String F_Name, final String L_Name, final String email, final String password){
+         class UserRegisterationFunctionClass extends AsyncTask<String,Void,String>{
+
+             @Override
+             protected void onPreExecute() {
+                 super.onPreExecute();
+                 progressDialog=progressDialog.show(MainActivity.this,"Loading Data",null,true,true);
+
+             }
+
+             @Override
+             protected void onPostExecute(String HttpResponseMsg) {
+                 super.onPostExecute(HttpResponseMsg);
+                 progressDialog.dismiss();
+                 Toast.makeText(MainActivity.this,HttpResponseMsg.toString(),Toast.LENGTH_LONG).show();
+             }
+
+             @Override
+             protected String doInBackground(String... params) {
+                 hashMap.put("f_name",params[0]);
+
+                 hashMap.put("L_name",params[1]);
+
+                 hashMap.put("email",params[2]);
+
+                 hashMap.put("password",params[3]);
+
+                
+
+                 return finalResult;
+                // return null;
+             }
+         }
+}
+
 }
