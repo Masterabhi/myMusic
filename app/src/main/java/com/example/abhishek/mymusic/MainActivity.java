@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.net.MalformedURLException;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     Boolean CheckEditText ;
     ProgressDialog progressDialog;
     HashMap<String,String> hashMap = new HashMap<>();
-     //HttpParse httpParse = new HttpParse();
+     HttpParser httpParse = new HttpParser();
 
 
 
@@ -110,7 +111,11 @@ public class MainActivity extends AppCompatActivity {
 
                  hashMap.put("password",params[3]);
 
-
+                 try {
+                     finalResult = httpParse.postRequest(hashMap, HttpURL);
+                 } catch (MalformedURLException e) {
+                     e.printStackTrace();
+                 }
 
                  return finalResult;
                 // return null;

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.net.MalformedURLException;
 import java.util.HashMap;
 
 public class UserLoginActivity extends AppCompatActivity {
@@ -21,8 +22,8 @@ public class UserLoginActivity extends AppCompatActivity {
     String HttpURL = "";
     Boolean CheckEditText ;
     ProgressDialog progressDialog;
-    HashMap<String,String> hashMap = new HashMap<>();
-    //HttpParse httpParse = new HttpParse();
+   public HashMap<String,String> hashMap = new HashMap<>();
+    HttpParser httpParser=new HttpParser();
     public static final String UserEmail = "";
 
     @Override
@@ -38,11 +39,11 @@ public class UserLoginActivity extends AppCompatActivity {
                 CheckEditTextIsEmptyOrNot();
                 if(CheckEditText)
                 {
-
+                  userLoginFunction(EmailHolder,PasswordHolder);
                 }
                 else
                 {
-
+                   Toast.makeText(UserLoginActivity.this,"Please fill all form fields.",Toast.LENGTH_SHORT).show();
                 }
             }
             public void CheckEditTextIsEmptyOrNot()
@@ -62,7 +63,7 @@ public class UserLoginActivity extends AppCompatActivity {
 
             }
 
-            public void userLoginFunction(final String Email,final String Password )
+            public void userLoginFunction(final String email,final String password )
             {
                 class UserLoginClass extends AsyncTask<String,Void,String>{
 
@@ -80,7 +81,7 @@ public class UserLoginActivity extends AppCompatActivity {
                         {
                             finish();
                             Intent intent=new Intent(UserLoginActivity.this,DashboardActivity.class);
-                            intent.putExtra(UserEmail,Email);
+                            intent.putExtra(UserEmail,email);
                             startActivity(intent);
                         }
                         else
@@ -92,14 +93,22 @@ public class UserLoginActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    protected String doInBackground(String... params) {
+                    public String doInBackground(String... params) {
                         hashMap.put("email",params[0]);
 
                         hashMap.put("password",params[1]);
-                        
-                        return null;
+                        try {
+                            finalResult=httpParser.postRequest(hashMap,HttpURL);
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
+
+                        return finalResult;
                     }
+
                 }
+                UserLoginClass userLoginClass=new UserLoginClass();
+                userLoginClass.execute(email,password);
             }
         });
 
